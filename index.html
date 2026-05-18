@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador Financiero Coco V3 — Caribe Colombiano</title>
+<title>Simulador Financiero Coco V5 — Caribe Colombiano</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -32,11 +32,7 @@
   .header-text h1 { font-size: 22px; margin-bottom: 4px; }
   .header-text p { font-size: 12px; opacity: 0.9; }
 
-  .header-actions {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
   .btn {
     padding: 9px 14px;
     border: none;
@@ -53,14 +49,8 @@
   }
   .btn:hover { background: #e8f1ed; transform: translateY(-1px); }
   .btn-warn { background: #fff3cd; color: #856404; }
-  .btn-warn:hover { background: #ffe69c; }
 
-  /* SCENARIO SELECTOR */
-  .scenario-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
+  .scenario-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
   .sc-tab {
     flex: 1;
     padding: 14px 16px;
@@ -80,7 +70,6 @@
   .sc-title { font-size: 14px; color: #1b4332; font-weight: 700; }
   .sc-sub { font-size: 11px; color: #52796f; margin-top: 2px; }
 
-  /* MAIN NAV */
   .nav {
     display: flex;
     gap: 4px;
@@ -106,7 +95,6 @@
   .nav-btn:hover { background: #f0f7f4; }
   .nav-btn.active { background: #2d6a4f; color: white; }
 
-  /* KPI STRIP */
   .kpi-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -127,7 +115,6 @@
   .kpi .val { font-size: 22px; font-weight: 700; margin-top: 4px; }
   .kpi .sub { font-size: 11px; opacity: 0.85; margin-top: 2px; }
 
-  /* CARDS / SECTIONS */
   .section {
     background: white;
     border-radius: 14px;
@@ -143,7 +130,6 @@
     justify-content: space-between;
     align-items: center;
     border-left: 4px solid #2d6a4f;
-    transition: background 0.2s;
     user-select: none;
   }
   .section-header:hover { background: #e8f1ed; }
@@ -164,22 +150,10 @@
     align-items: center;
     justify-content: center;
   }
-  .section-header .meta {
-    font-size: 11px;
-    color: #52796f;
-    font-weight: 400;
-    margin-left: 8px;
-  }
-  .toggle-arrow {
-    font-size: 14px;
-    color: #2d6a4f;
-    transition: transform 0.3s;
-  }
+  .section-header .meta { font-size: 11px; color: #52796f; font-weight: 400; margin-left: 8px; }
+  .toggle-arrow { font-size: 14px; color: #2d6a4f; transition: transform 0.3s; }
   .section.collapsed .toggle-arrow { transform: rotate(-90deg); }
-  .section-body {
-    padding: 20px;
-    border-top: 1px solid #e8f1ed;
-  }
+  .section-body { padding: 20px; border-top: 1px solid #e8f1ed; }
   .section.collapsed .section-body { display: none; }
 
   .subsection {
@@ -204,11 +178,7 @@
   .grid-5 { grid-template-columns: repeat(5, 1fr); }
 
   .field { display: flex; flex-direction: column; gap: 4px; }
-  .field label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #52796f;
-  }
+  .field label { font-size: 11px; font-weight: 600; color: #52796f; }
   .field input, .field select {
     padding: 9px 11px;
     border: 1.5px solid #d8e8df;
@@ -216,7 +186,6 @@
     font-size: 13px;
     color: #1b4332;
     background: #fafefb;
-    transition: all 0.15s;
     width: 100%;
     font-family: inherit;
   }
@@ -227,6 +196,11 @@
     box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.1);
   }
   .field .hint { font-size: 10px; color: #74a691; font-style: italic; }
+  .field input[data-fmt="money"], .field input[data-fmt="int"] {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
 
   .toggle-row {
     display: flex;
@@ -237,46 +211,23 @@
     border-radius: 8px;
     margin-bottom: 12px;
   }
-  .toggle {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-  }
+  .toggle { position: relative; display: inline-block; width: 44px; height: 24px; flex-shrink: 0; }
   .toggle input { opacity: 0; width: 0; height: 0; }
   .slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: #ccc;
-    transition: 0.3s;
-    border-radius: 24px;
+    position: absolute; cursor: pointer; inset: 0;
+    background: #ccc; transition: 0.3s; border-radius: 24px;
   }
   .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px;
-    width: 18px;
-    left: 3px;
-    bottom: 3px;
-    background: white;
-    transition: 0.3s;
-    border-radius: 50%;
+    position: absolute; content: ""; height: 18px; width: 18px;
+    left: 3px; bottom: 3px; background: white; transition: 0.3s; border-radius: 50%;
   }
   input:checked + .slider { background: #2d6a4f; }
   input:checked + .slider:before { transform: translateX(20px); }
   .toggle-label { font-size: 13px; font-weight: 600; color: #1b4332; }
   .toggle-sub { font-size: 11px; color: #52796f; }
 
-  /* TABLES */
   .table-wrap { overflow-x: auto; }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 4px;
-  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 4px; }
   table th {
     background: #1b4332;
     color: white;
@@ -285,7 +236,6 @@
     font-weight: 600;
     font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
     white-space: nowrap;
   }
   table th:first-child { text-align: left; border-top-left-radius: 6px; }
@@ -294,34 +244,31 @@
     padding: 8px 7px;
     border-bottom: 1px solid #e8f1ed;
     text-align: right;
-    color: #1a3a2e;
     white-space: nowrap;
   }
   table td:first-child { text-align: left; font-weight: 500; }
   table tr:hover td { background: #f8fcfa; }
   table .tot td { background: #d8e8df; font-weight: 700; color: #1b4332; }
   table .neg { color: #c1121f; }
-  table .pos { color: #2d6a4f; font-weight: 600; }
   table .sub-row td { background: #fafefb; font-style: italic; font-size: 11px; color: #52796f; }
 
-  /* Filas/celdas con color en flujo de caja */
   table tr.row-ingresos td { background: #c8e6c9; color: #1b5e20; font-weight: 700; }
-  table tr.row-ingresos td:first-child { color: #1b5e20; }
   table tr.row-ingresos:hover td { background: #b9dcba; }
 
-  /* Celdas EBITDA / Flujo / Caja con condición de positivo/negativo */
   table td.cell-pos { background: #e8f5e9 !important; color: #1b5e20 !important; font-weight: 700; }
   table td.cell-neg { background: #ffebee !important; color: #c62828 !important; font-weight: 700; }
-  table tr.row-ebitda td:first-child,
-  table tr.row-flujoInv td:first-child,
-  table tr.row-cajaAcum td:first-child { font-weight: 700; background: #f8fcfa; }
+
+  table tr.row-prod td { background: #fff8e1; color: #5a3a00; font-weight: 600; }
+  table tr.row-prod:hover td { background: #fff3c1; }
+
+  table tr.row-costoCoco td { background: #fce4ec; color: #880e4f; font-weight: 600; }
+  table tr.row-costoCoco:hover td { background: #f8c4d4; }
 
   .comp-table th { background: #2d6a4f; }
   .comp-table td.s1 { background: #f0f7f4; }
   .comp-table td.s2 { background: #fff8f0; }
   .comp-table td.s3 { background: #f0f4f8; }
 
-  /* CHARTS */
   .chart-card {
     background: white;
     border-radius: 12px;
@@ -337,13 +284,12 @@
     background: linear-gradient(180deg, #40916c 0%, #2d6a4f 100%);
     border-radius: 4px 4px 0 0;
     min-height: 2px;
-    transition: height 0.3s;
   }
   .bar.neg { background: linear-gradient(180deg, #e76f51 0%, #c1121f 100%); }
+  .bar.pink { background: linear-gradient(180deg, #f48fb1 0%, #ad1457 100%); }
   .bar-lbl { font-size: 10px; color: #52796f; font-weight: 600; }
   .bar-val { font-size: 9px; color: #1b4332; font-weight: 600; }
 
-  /* Comparative charts: 3 scenarios per axis */
   .chart-comp { height: 240px; padding-top: 20px; }
   .bar-group {
     flex: 1;
@@ -366,9 +312,7 @@
     min-height: 2px;
     border-radius: 3px 3px 0 0;
     position: relative;
-    transition: all 0.3s;
   }
-  .bar-3:hover { filter: brightness(1.15); }
   .bar-3.s1 { background: linear-gradient(180deg, #40916c 0%, #2d6a4f 100%); }
   .bar-3.s2 { background: linear-gradient(180deg, #d4a574 0%, #b08968 100%); }
   .bar-3.s3 { background: linear-gradient(180deg, #7d8a96 0%, #495057 100%); }
@@ -395,35 +339,20 @@
   }
   .comp-legend-item { display: flex; align-items: center; gap: 6px; }
   .comp-legend-color { width: 14px; height: 14px; border-radius: 3px; }
+  .comp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
-  .comp-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  /* Radar/spider would be too complex; use horizontal bars for KPIs */
-  .kpi-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-top: 8px;
-  }
+  .kpi-bars { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
   .kpi-bar-row {
     display: grid;
-    grid-template-columns: 130px 1fr;
+    grid-template-columns: 140px 1fr;
     align-items: center;
     gap: 12px;
   }
   .kpi-bar-lbl { font-size: 12px; color: #1b4332; font-weight: 600; }
-  .kpi-bar-track {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+  .kpi-bar-track { display: flex; flex-direction: column; gap: 4px; }
   .kpi-bar-line {
     display: grid;
-    grid-template-columns: 32px 1fr 80px;
+    grid-template-columns: 32px 1fr 90px;
     align-items: center;
     gap: 8px;
     font-size: 11px;
@@ -433,21 +362,15 @@
     height: 14px;
     background: #e8f1ed;
     border-radius: 4px;
-    position: relative;
     overflow: hidden;
   }
-  .kpi-bar-fill-inner {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 0.4s;
-  }
+  .kpi-bar-fill-inner { height: 100%; border-radius: 4px; }
   .kpi-bar-fill-inner.s1 { background: linear-gradient(90deg, #40916c, #2d6a4f); }
   .kpi-bar-fill-inner.s2 { background: linear-gradient(90deg, #d4a574, #b08968); }
   .kpi-bar-fill-inner.s3 { background: linear-gradient(90deg, #7d8a96, #495057); }
   .kpi-bar-fill-inner.neg { background: linear-gradient(90deg, #e76f51, #c1121f); }
   .kpi-bar-val { text-align: right; color: #1b4332; font-weight: 600; font-size: 11px; }
 
-  /* ALERT */
   .alert {
     background: #fff8e1;
     border-left: 4px solid #b35c00;
@@ -457,17 +380,7 @@
     font-size: 12px;
     color: #5a3a00;
   }
-  .alert.info {
-    background: #e8f1ed;
-    border-left-color: #2d6a4f;
-    color: #1b4332;
-  }
-  .alert.success {
-    background: #d4edda;
-    border-left-color: #155724;
-    color: #155724;
-  }
-  .alert strong { color: inherit; }
+  .alert.info { background: #e8f1ed; border-left-color: #2d6a4f; color: #1b4332; }
 
   .hidden { display: none; }
 
@@ -479,7 +392,6 @@
     border-bottom: 2px solid #d8e8df;
   }
 
-  /* Modal */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -511,14 +423,8 @@
     font-size: 11px;
     resize: vertical;
   }
-  .modal-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 14px;
-  }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
   .btn-primary { background: #2d6a4f; color: white; }
-  .btn-primary:hover { background: #1b4332; }
   .btn-secondary { background: #e8f1ed; color: #1b4332; }
 
   @media (max-width: 900px) {
@@ -533,7 +439,7 @@
 
 <header>
   <div class="header-text">
-    <h1>🥥 Simulador Financiero V3 — Proyecto Coco Caribe</h1>
+    <h1>🥥 Simulador Financiero V5 — Proyecto Coco Caribe</h1>
     <p>Finca cerca PNN Tayrona · Híbrido Enano × Alto Panamá · 8–10 ha · Manejo orgánico</p>
   </div>
   <div class="header-actions">
@@ -543,26 +449,23 @@
   </div>
 </header>
 
-<!-- SCENARIO SELECTOR -->
 <div class="scenario-tabs">
   <button class="sc-tab active" data-sc="1">
-    <div class="sc-title">📗 Escenario 1 — Base</div>
-    <div class="sc-sub">8 ha · Realista · Calibrado por IA</div>
+    <div class="sc-title">📗 Escenario 1 — Base / Medio</div>
+    <div class="sc-sub">8 ha · Calibrado con datos IICA</div>
   </button>
   <button class="sc-tab" data-sc="2">
-    <div class="sc-title">📘 Escenario 2 — Optimista</div>
-    <div class="sc-sub">10 ha · Editable · Con crédito</div>
+    <div class="sc-title">📘 Escenario 2 — Optimista / Ideal</div>
+    <div class="sc-sub">10 ha · Manejo de élite · Con crédito</div>
   </button>
   <button class="sc-tab" data-sc="3">
     <div class="sc-title">📕 Escenario 3 — Pesimista</div>
-    <div class="sc-sub">8 ha · Editable · Estrés test</div>
+    <div class="sc-sub">8 ha · Estrés test</div>
   </button>
 </div>
 
-<!-- KPI STRIP -->
 <div class="kpi-grid" id="kpiStrip"></div>
 
-<!-- MAIN NAV -->
 <div class="nav">
   <button class="nav-btn active" data-page="inputs">📋 Configuración</button>
   <button class="nav-btn" data-page="invest">💰 Inversión</button>
@@ -573,18 +476,15 @@
   <button class="nav-btn" data-page="compare">⚖️ Comparativa 3 Escenarios</button>
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: INPUTS -->
-<!-- ============================================ -->
+<!-- INPUTS -->
 <div class="page" id="page-inputs">
   <h2 class="page-title">⚙️ Configuración del Escenario <span id="chipSc" style="color:#52796f;font-size:14px;font-weight:400;"></span></h2>
 
   <div class="alert info">
-    💡 <strong>Tip:</strong> Haz clic en el título de cada bloque para expandirlo o cerrarlo. Usa los botones de arriba para exportar o cargar tus datos como respaldo.
+    💡 <strong>Tip:</strong> Los campos de dinero muestran separadores de miles automáticamente mientras escribes. Usa los botones de arriba para exportar o cargar tus datos.
   </div>
 
-  <!-- BLOCK 1 -->
-  <div class="section" data-sec="estructura">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">🌴</span> 1. Estructura del proyecto <span class="meta">Hectáreas, densidad, plántulas</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -593,30 +493,29 @@
       <div class="grid grid-4">
         <div class="field">
           <label>Hectáreas a sembrar</label>
-          <input type="number" data-k="ha" step="0.5">
+          <input type="text" data-k="ha" data-fmt="dec">
           <span class="hint">Sin valor de tierra</span>
         </div>
         <div class="field">
           <label>Plantas por hectárea</label>
-          <input type="number" data-k="plPorHa">
+          <input type="text" data-k="plPorHa" data-fmt="int">
           <span class="hint">180 = 8x8 m tresbolillo</span>
         </div>
         <div class="field">
           <label>Costo plántula híbrida (COP)</label>
-          <input type="number" data-k="costoPlantula" step="500">
+          <input type="text" data-k="costoPlantula" data-fmt="money">
           <span class="hint">Vivero certificado ICA</span>
         </div>
         <div class="field">
           <label>Transporte plántulas a finca (COP total)</label>
-          <input type="number" data-k="costoTransportePlantulas" step="100000">
+          <input type="text" data-k="costoTransportePlantulas" data-fmt="money">
           <span class="hint">Vivero → finca, año 0</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 2 -->
-  <div class="section" data-sec="produccion">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">📈</span> 2. Precio y productividad <span class="meta">Cocos por planta y precio venta</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -627,64 +526,54 @@
         <div class="grid grid-3">
           <div class="field">
             <label>Precio venta coco año 1 (COP)</label>
-            <input type="number" data-k="precioCoco" step="50">
+            <input type="text" data-k="precioCoco" data-fmt="money">
           </div>
           <div class="field">
             <label>Merma comercial (%)</label>
-            <input type="number" data-k="merma" step="1">
+            <input type="text" data-k="merma" data-fmt="dec">
             <span class="hint">Cocos no vendibles</span>
           </div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Curva de productividad (cocos/planta/año)</div>
+        <div class="alert info" style="margin-bottom:10px;">
+          📚 <strong>Referencia IICA</strong> híbrido Enano × Alto Panamá: año 3 ≈ 0, año 4 ≈ 20, año 5 ≈ 40, año 6 ≈ 80, año 7 ≈ 100, año 8+ ≈ 120-140
+        </div>
         <div class="grid grid-5">
-          <div class="field"><label>Año 1</label><input type="number" data-k="prod_1"></div>
-          <div class="field"><label>Año 2</label><input type="number" data-k="prod_2"></div>
-          <div class="field"><label>Año 3</label><input type="number" data-k="prod_3"><span class="hint">Inicio prod.</span></div>
-          <div class="field"><label>Año 4</label><input type="number" data-k="prod_4"></div>
-          <div class="field"><label>Año 5</label><input type="number" data-k="prod_5"></div>
-          <div class="field"><label>Año 6</label><input type="number" data-k="prod_6"><span class="hint">Plena prod.</span></div>
-          <div class="field"><label>Año 7</label><input type="number" data-k="prod_7"></div>
-          <div class="field"><label>Año 8</label><input type="number" data-k="prod_8"></div>
-          <div class="field"><label>Año 9</label><input type="number" data-k="prod_9"></div>
-          <div class="field"><label>Año 10</label><input type="number" data-k="prod_10"></div>
+          <div class="field"><label>Año 1</label><input type="text" data-k="prod_1" data-fmt="int"></div>
+          <div class="field"><label>Año 2</label><input type="text" data-k="prod_2" data-fmt="int"></div>
+          <div class="field"><label>Año 3</label><input type="text" data-k="prod_3" data-fmt="int"><span class="hint">Inicio prod.</span></div>
+          <div class="field"><label>Año 4</label><input type="text" data-k="prod_4" data-fmt="int"></div>
+          <div class="field"><label>Año 5</label><input type="text" data-k="prod_5" data-fmt="int"></div>
+          <div class="field"><label>Año 6</label><input type="text" data-k="prod_6" data-fmt="int"></div>
+          <div class="field"><label>Año 7</label><input type="text" data-k="prod_7" data-fmt="int"></div>
+          <div class="field"><label>Año 8</label><input type="text" data-k="prod_8" data-fmt="int"><span class="hint">Plena prod.</span></div>
+          <div class="field"><label>Año 9</label><input type="text" data-k="prod_9" data-fmt="int"></div>
+          <div class="field"><label>Año 10</label><input type="text" data-k="prod_10" data-fmt="int"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 3 -->
-  <div class="section" data-sec="inflacion">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">📊</span> 3. Inflación anual <span class="meta">Crecimiento año a año</span></h2>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="section-body">
       <div class="alert info">
-        💡 Si los costos suben más rápido que el precio del coco, el margen se comprime con el tiempo. Es realista en Colombia.
+        💡 Si los costos suben más rápido que el precio del coco, el margen se comprime con el tiempo.
       </div>
       <div class="grid grid-3">
-        <div class="field">
-          <label>Inflación precio de venta (%)</label>
-          <input type="number" data-k="inflPrecio" step="0.5">
-        </div>
-        <div class="field">
-          <label>Inflación costos operativos (%)</label>
-          <input type="number" data-k="inflCostos" step="0.5">
-          <span class="hint">Insumos, MO, asesoría</span>
-        </div>
-        <div class="field">
-          <label>Inflación servicios públicos (%)</label>
-          <input type="number" data-k="inflServicios" step="0.5">
-          <span class="hint">Agua + energía</span>
-        </div>
+        <div class="field"><label>Inflación precio de venta (%)</label><input type="text" data-k="inflPrecio" data-fmt="dec"></div>
+        <div class="field"><label>Inflación costos operativos (%)</label><input type="text" data-k="inflCostos" data-fmt="dec"></div>
+        <div class="field"><label>Inflación servicios públicos (%)</label><input type="text" data-k="inflServicios" data-fmt="dec"></div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 4 -->
-  <div class="section" data-sec="inversion">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">💰</span> 4. Inversión inicial (Año 0) <span class="meta">Sin tierra</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -693,72 +582,70 @@
       <div class="subsection">
         <div class="subsection-title">Establecimiento del cultivo (por hectárea)</div>
         <div class="grid grid-3">
-          <div class="field"><label>Topografía + estaquillado (COP/ha)</label><input type="number" data-k="costoTopografia" step="100000"></div>
-          <div class="field"><label>Huecos + siembra + MO (COP/ha)</label><input type="number" data-k="costoHueco" step="100000"></div>
-          <div class="field"><label>Sistema riego goteo (COP/ha)</label><input type="number" data-k="costoRiego" step="100000"></div>
-          <div class="field"><label>Cerca eléctrica perimetral (COP/ha)</label><input type="number" data-k="costoCerca" step="100000"></div>
+          <div class="field"><label>Topografía + estaquillado (COP/ha)</label><input type="text" data-k="costoTopografia" data-fmt="money"></div>
+          <div class="field"><label>Huecos + siembra + MO (COP/ha)</label><input type="text" data-k="costoHueco" data-fmt="money"></div>
+          <div class="field"><label>Sistema riego goteo (COP/ha)</label><input type="text" data-k="costoRiego" data-fmt="money"></div>
+          <div class="field"><label>Cerca eléctrica perimetral (COP/ha)</label><input type="text" data-k="costoCerca" data-fmt="money"></div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Infraestructura y servicios (total proyecto)</div>
         <div class="grid grid-3">
-          <div class="field"><label>Bodega + caseta poscosecha (COP)</label><input type="number" data-k="costoBodega" step="500000"></div>
-          <div class="field"><label>Herramientas + biofábrica (COP)</label><input type="number" data-k="costoHerramientas" step="500000"></div>
-          <div class="field"><label>Captación agua + concesión (COP)</label><input type="number" data-k="costoAgua" step="500000"></div>
-          <div class="field"><label>Estudios y licencias (COP)</label><input type="number" data-k="costoLicencias" step="500000"></div>
-          <div class="field"><label>Imprevistos inversión (%)</label><input type="number" data-k="imprevistosInv" step="1"></div>
+          <div class="field"><label>Bodega + caseta poscosecha (COP)</label><input type="text" data-k="costoBodega" data-fmt="money"></div>
+          <div class="field"><label>Herramientas + biofábrica (COP)</label><input type="text" data-k="costoHerramientas" data-fmt="money"></div>
+          <div class="field"><label>Captación agua + concesión (COP)</label><input type="text" data-k="costoAgua" data-fmt="money"></div>
+          <div class="field"><label>Estudios y licencias (COP)</label><input type="text" data-k="costoLicencias" data-fmt="money"></div>
+          <div class="field"><label>Imprevistos inversión (%)</label><input type="text" data-k="imprevistosInv" data-fmt="dec"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 5 -->
-  <div class="section" data-sec="manejo">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">🌱</span> 5. Manejo del cultivo <span class="meta">Variables · escalan con plantas</span></h2>
       <span class="toggle-arrow">▼</span>
     </div>
     <div class="section-body">
       <div class="alert info">
-        💡 Los costos por planta cambian según etapa: <strong>Establecimiento (1–2)</strong>, <strong>Crecimiento (3–5)</strong>, <strong>Producción plena (6+)</strong>.
+        💡 Costos por planta según etapa: <strong>Establecimiento (1–2)</strong>, <strong>Crecimiento (3–5)</strong>, <strong>Producción plena (6+)</strong>.
       </div>
       <div class="subsection">
         <div class="subsection-title">Fertilización orgánica (COP/planta/año)</div>
         <div class="grid grid-3">
-          <div class="field"><label>Año 1–2 (establecimiento)</label><input type="number" data-k="fert_estab" step="1000"></div>
-          <div class="field"><label>Año 3–5 (crecimiento)</label><input type="number" data-k="fert_crec" step="1000"></div>
-          <div class="field"><label>Año 6+ (producción)</label><input type="number" data-k="fert_prod" step="1000"></div>
+          <div class="field"><label>Año 1–2 (establecimiento)</label><input type="text" data-k="fert_estab" data-fmt="money"></div>
+          <div class="field"><label>Año 3–5 (crecimiento)</label><input type="text" data-k="fert_crec" data-fmt="money"></div>
+          <div class="field"><label>Año 6+ (producción)</label><input type="text" data-k="fert_prod" data-fmt="money"></div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Control de malezas / guadañada (COP/planta/año)</div>
         <div class="grid grid-3">
-          <div class="field"><label>Año 1–2</label><input type="number" data-k="malezas_estab" step="500"></div>
-          <div class="field"><label>Año 3–5</label><input type="number" data-k="malezas_crec" step="500"></div>
-          <div class="field"><label>Año 6+</label><input type="number" data-k="malezas_prod" step="500"></div>
+          <div class="field"><label>Año 1–2</label><input type="text" data-k="malezas_estab" data-fmt="money"></div>
+          <div class="field"><label>Año 3–5</label><input type="text" data-k="malezas_crec" data-fmt="money"></div>
+          <div class="field"><label>Año 6+</label><input type="text" data-k="malezas_prod" data-fmt="money"></div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Tratamiento sanitario + foliares (COP/planta/año)</div>
         <div class="grid grid-3">
-          <div class="field"><label>Sanitario año 1–5</label><input type="number" data-k="sanit_temp" step="500"></div>
-          <div class="field"><label>Sanitario año 6+</label><input type="number" data-k="sanit_prod" step="500"></div>
-          <div class="field"><label>Foliares contingencia (todos)</label><input type="number" data-k="foliares" step="500"></div>
+          <div class="field"><label>Sanitario año 1–5</label><input type="text" data-k="sanit_temp" data-fmt="money"></div>
+          <div class="field"><label>Sanitario año 6+</label><input type="text" data-k="sanit_prod" data-fmt="money"></div>
+          <div class="field"><label>Foliares contingencia (todos)</label><input type="text" data-k="foliares" data-fmt="money"></div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Poda, trampeo y riego</div>
         <div class="grid grid-3">
-          <div class="field"><label>Poda + deshoje año 3+ (COP/planta/año)</label><input type="number" data-k="poda" step="500"></div>
-          <div class="field"><label>Trampeo picudo + feromonas (COP/ha/año)</label><input type="number" data-k="trampeo" step="50000"></div>
-          <div class="field"><label>Operación riego MO (COP/ha/año)</label><input type="number" data-k="opRiego" step="50000"></div>
+          <div class="field"><label>Poda + deshoje año 3+ (COP/planta/año)</label><input type="text" data-k="poda" data-fmt="money"></div>
+          <div class="field"><label>Trampeo picudo + feromonas (COP/ha/año)</label><input type="text" data-k="trampeo" data-fmt="money"></div>
+          <div class="field"><label>Operación riego MO (COP/ha/año)</label><input type="text" data-k="opRiego" data-fmt="money"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 6 -->
-  <div class="section" data-sec="cosecha">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">🚚</span> 6. Cosecha y logística <span class="meta">Variables · escalan con producción</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -769,7 +656,7 @@
         <div class="grid grid-3">
           <div class="field">
             <label>Cosecha + acarreo (COP/coco)</label>
-            <input type="number" data-k="costoCosechaAcarreo" step="5">
+            <input type="text" data-k="costoCosechaAcarreo" data-fmt="money">
             <span class="hint">Por destajo</span>
           </div>
         </div>
@@ -783,20 +670,19 @@
           </label>
           <div>
             <div class="toggle-label">¿Yo asumo el flete?</div>
-            <div class="toggle-sub">Activa para incluir flete a Barranquilla/Santa Marta. Desactivado = comprador asume.</div>
+            <div class="toggle-sub">Activa para incluir flete. Desactivado = comprador asume.</div>
           </div>
         </div>
         <div class="grid grid-3" id="fleteFields">
-          <div class="field"><label>Costo flete (COP/viaje)</label><input type="number" data-k="costoFleteViaje" step="100000"></div>
-          <div class="field"><label>Cocos por viaje</label><input type="number" data-k="cocosPorViaje" step="500"></div>
-          <div class="field"><label>% cosecha que yo transporto</label><input type="number" data-k="porcMiTransporte" step="5"></div>
+          <div class="field"><label>Costo flete (COP/viaje)</label><input type="text" data-k="costoFleteViaje" data-fmt="money"></div>
+          <div class="field"><label>Cocos por viaje</label><input type="text" data-k="cocosPorViaje" data-fmt="int"></div>
+          <div class="field"><label>% cosecha que yo transporto</label><input type="text" data-k="porcMiTransporte" data-fmt="dec"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 7 -->
-  <div class="section" data-sec="fijos">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">📌</span> 7. Costos fijos anuales <span class="meta">No varían con producción</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -805,24 +691,23 @@
       <div class="subsection">
         <div class="subsection-title">Asesoría técnica</div>
         <div class="grid grid-3">
-          <div class="field"><label>Honorarios agrónomo (COP/mes)</label><input type="number" data-k="agronHonorarios" step="100000"></div>
-          <div class="field"><label>Viáticos agrónomo (COP/mes)</label><input type="number" data-k="agronViaticos" step="50000"><span class="hint">Transporte + alimentación + hospedaje</span></div>
+          <div class="field"><label>Honorarios agrónomo (COP/mes)</label><input type="text" data-k="agronHonorarios" data-fmt="money"></div>
+          <div class="field"><label>Viáticos agrónomo (COP/mes)</label><input type="text" data-k="agronViaticos" data-fmt="money"><span class="hint">Transporte + alimentación + hospedaje</span></div>
         </div>
       </div>
       <div class="subsection">
         <div class="subsection-title">Servicios e infraestructura</div>
         <div class="grid grid-3">
-          <div class="field"><label>Agua + energía riego (COP/ha/año)</label><input type="number" data-k="aguaEnergia" step="50000"></div>
-          <div class="field"><label>Mant. riego + cerca (COP/ha/año)</label><input type="number" data-k="mantRiego" step="50000"></div>
-          <div class="field"><label>Administración general (COP/año)</label><input type="number" data-k="administracion" step="100000"></div>
-          <div class="field"><label>Imprevistos operativos (%)</label><input type="number" data-k="imprevistosOp" step="1"></div>
+          <div class="field"><label>Agua + energía riego (COP/ha/año)</label><input type="text" data-k="aguaEnergia" data-fmt="money"></div>
+          <div class="field"><label>Mant. riego + cerca (COP/ha/año)</label><input type="text" data-k="mantRiego" data-fmt="money"></div>
+          <div class="field"><label>Administración general (COP/año)</label><input type="text" data-k="administracion" data-fmt="money"></div>
+          <div class="field"><label>Imprevistos operativos (%)</label><input type="text" data-k="imprevistosOp" data-fmt="dec"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 8 -->
-  <div class="section" data-sec="financing">
+  <div class="section">
     <div class="section-header">
       <h2><span class="icon">🏦</span> 8. Financiamiento bancario <span class="meta">Opcional</span></h2>
       <span class="toggle-arrow">▼</span>
@@ -839,96 +724,153 @@
         </div>
       </div>
       <div class="grid grid-4" id="finFields">
-        <div class="field"><label>Monto crédito (COP)</label><input type="number" data-k="montoCredito" step="1000000"></div>
-        <div class="field"><label>Tasa interés EA (%)</label><input type="number" data-k="tasaCredito" step="0.1"><span class="hint">Finagro ~10–12%</span></div>
-        <div class="field"><label>Plazo (años)</label><input type="number" data-k="plazoCredito" step="1"></div>
-        <div class="field"><label>Período de gracia (años)</label><input type="number" data-k="graciaCredito" step="1"></div>
+        <div class="field"><label>Monto crédito (COP)</label><input type="text" data-k="montoCredito" data-fmt="money"></div>
+        <div class="field"><label>Tasa interés EA (%)</label><input type="text" data-k="tasaCredito" data-fmt="dec"><span class="hint">Finagro ~10–12%</span></div>
+        <div class="field"><label>Plazo (años)</label><input type="text" data-k="plazoCredito" data-fmt="int"></div>
+        <div class="field"><label>Período de gracia (años)</label><input type="text" data-k="graciaCredito" data-fmt="int"></div>
       </div>
     </div>
   </div>
-
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: INVERSIÓN -->
-<!-- ============================================ -->
 <div class="page hidden" id="page-invest">
   <h2 class="page-title">💰 Detalle de Inversión Inicial (Año 0)</h2>
   <div class="alert info">Sin valor de tierra. Cifras en COP.</div>
   <div class="section"><div class="section-body"><div class="table-wrap"><table id="tablaInversion"></table></div></div></div>
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: OPS -->
-<!-- ============================================ -->
 <div class="page hidden" id="page-ops">
   <h2 class="page-title">⚙️ Costos Operativos Detallados por Año</h2>
   <div class="alert info">Todos los costos incluyen inflación anual aplicada según tipo.</div>
   <div class="section"><div class="section-body"><div class="table-wrap"><table id="tablaCostos"></table></div></div></div>
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: FINANCING -->
-<!-- ============================================ -->
 <div class="page hidden" id="page-financing">
   <h2 class="page-title">🏦 Tabla de Amortización del Crédito</h2>
   <div id="finStatus"></div>
   <div class="section"><div class="section-body"><div class="table-wrap"><table id="tablaAmortizacion"></table></div></div></div>
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: FLOW -->
-<!-- ============================================ -->
 <div class="page hidden" id="page-flow">
   <h2 class="page-title">📊 Flujo de Caja a 10 Años</h2>
   <div class="alert info">
-    💡 <strong>Lectura de colores:</strong> 
-    🟢 Ingresos siempre en verde · 
-    🟢 EBITDA / Flujo / Caja en verde cuando son positivos · 
-    🔴 En rojo cuando son negativos.
+    💡 <strong>Colores:</strong> 🟢 Ingresos en verde · 
+    🟢 EBITDA/Flujo/Caja verde positivo · 🔴 rojo negativo.
   </div>
-  <div class="section"><div class="section-body"><div class="table-wrap"><table id="tablaFlujo"></table></div></div></div>
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">💵</span> Flujo de Caja</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="tablaFlujo"></table></div></div>
+  </div>
 
+  <h2 class="page-title" style="margin-top:18px;">🥥 Análisis Unitario por Coco</h2>
+  <div class="alert info">
+    💡 Detalle de producción, ventas y costo unitario por coco año a año. Separado del flujo de caja para mejor lectura.
+  </div>
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🥥</span> Métricas de producción y costo unitario</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="tablaCocos"></table></div></div>
+  </div>
+
+  <h2 class="page-title" style="margin-top:18px;">📈 Gráficos</h2>
   <div class="chart-card"><h3>EBITDA anual</h3><div class="bars" id="barsEbitda"></div></div>
   <div class="chart-card"><h3>Caja libre acumulada para el inversionista</h3><div class="bars" id="barsCaja"></div></div>
+  <div class="chart-card"><h3>Costo unitario de producción por coco</h3><div class="bars" id="barsCostoCoco"></div></div>
 </div>
 
-<!-- ============================================ -->
-<!-- PAGE: KPIS -->
-<!-- ============================================ -->
 <div class="page hidden" id="page-kpis">
   <h2 class="page-title">🎯 Indicadores Clave Detallados</h2>
-  <div class="section"><div class="section-body"><div class="table-wrap"><table id="tablaKpis"></table></div></div></div>
-</div>
-
-<!-- ============================================ -->
-<!-- PAGE: COMPARE -->
-<!-- ============================================ -->
-<div class="page hidden" id="page-compare">
-  <h2 class="page-title">⚖️ Comparativa entre los 3 Escenarios</h2>
-
-  <div class="section"><div class="section-body">
-    <h3 style="font-size:14px;color:#1b4332;margin-bottom:10px;">Tabla comparativa completa</h3>
-    <div class="table-wrap"><table class="comp-table" id="tablaComparativa"></table></div>
-  </div></div>
-
-  <h2 class="page-title" style="margin-top:18px;">📊 Gráficos comparativos de variables críticas</h2>
-
   <div class="alert info">
-    💡 Estos gráficos te permiten identificar visualmente las diferencias críticas entre los 3 escenarios. Verde = Base · Marrón = Optimista · Gris = Pesimista.
+    💡 KPIs agrupados por categoría para facilitar el análisis. Cada bloque cubre un aspecto del proyecto.
   </div>
 
-  <!-- KPIs Clave en barras horizontales -->
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🌴</span> 1. Estructura y dimensionamiento</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiEstructura"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">💰</span> 2. Inversión y capital</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiInversion"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🥥</span> 3. Producción y ventas</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiProduccion"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">📊</span> 4. Ingresos y EBITDA</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiIngresos"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🌸</span> 5. Costo unitario y márgenes</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiCostos"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🎯</span> 6. Rentabilidad (TIR, ROI, Payback)</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiRentabilidad"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">💵</span> 7. Caja del inversionista</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table id="kpiCaja"></table></div></div>
+  </div>
+</div>
+
+<div class="page hidden" id="page-compare">
+  <h2 class="page-title">⚖️ Comparativa entre los 3 Escenarios</h2>
+  <div class="alert info">
+    💡 Tablas agrupadas por categoría. Verde = Base · Marrón = Optimista · Gris = Pesimista.
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🌴</span> 1. Estructura del proyecto</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compEstructura"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">💰</span> 2. Inversión y capital</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compInversion"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🥥</span> 3. Producción y ventas</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compProduccion"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">📊</span> 4. Ingresos y EBITDA</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compIngresos"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🌸</span> 5. Costo unitario y márgenes</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compCostos"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">🎯</span> 6. Rentabilidad</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compRentabilidad"></table></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-header"><h2><span class="icon">💵</span> 7. Caja del inversionista</h2><span class="toggle-arrow">▼</span></div>
+    <div class="section-body"><div class="table-wrap"><table class="comp-table" id="compCaja"></table></div></div>
+  </div>
+
+  <h2 class="page-title" style="margin-top:18px;">📊 Gráficos comparativos de variables críticas</h2>
+  <div class="alert info">💡 Verde = Base · Marrón = Optimista · Gris = Pesimista.</div>
+
   <div class="chart-card">
     <h3>🎯 KPIs clave (comparación normalizada)</h3>
     <div id="kpiBarsComp"></div>
   </div>
 
-  <!-- Gráficos de barras agrupadas -->
   <div class="comp-grid">
-
     <div class="chart-card">
-      <h3>💰 Inversión inicial por escenario</h3>
+      <h3>💰 Inversión inicial</h3>
       <div class="bars chart-comp" id="chartInversion"></div>
       <div class="comp-legend">
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#2d6a4f"></div>Base</div>
@@ -936,7 +878,6 @@
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#495057"></div>Pesimista</div>
       </div>
     </div>
-
     <div class="chart-card">
       <h3>📈 EBITDA acumulado 10 años</h3>
       <div class="bars chart-comp" id="chartEbitdaAcum"></div>
@@ -946,7 +887,6 @@
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#495057"></div>Pesimista</div>
       </div>
     </div>
-
     <div class="chart-card">
       <h3>💵 Caja libre final año 10</h3>
       <div class="bars chart-comp" id="chartCajaFinal"></div>
@@ -956,9 +896,8 @@
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#495057"></div>Pesimista</div>
       </div>
     </div>
-
     <div class="chart-card">
-      <h3>🥥 Producción total año 10 (cocos)</h3>
+      <h3>🥥 Cocos vendidos año 10</h3>
       <div class="bars chart-comp" id="chartProduccion"></div>
       <div class="comp-legend">
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#2d6a4f"></div>Base</div>
@@ -966,12 +905,10 @@
         <div class="comp-legend-item"><div class="comp-legend-color" style="background:#495057"></div>Pesimista</div>
       </div>
     </div>
-
   </div>
 
-  <!-- Gráfico de evolución EBITDA año a año (líneas en barras agrupadas) -->
   <div class="chart-card">
-    <h3>📊 Evolución del EBITDA año a año (los 3 escenarios)</h3>
+    <h3>📊 Evolución EBITDA año a año (3 escenarios)</h3>
     <div class="bars chart-comp" id="chartEbitdaEvol"></div>
     <div class="comp-legend">
       <div class="comp-legend-item"><div class="comp-legend-color" style="background:#2d6a4f"></div>Base</div>
@@ -980,9 +917,8 @@
     </div>
   </div>
 
-  <!-- Gráfico de evolución caja acumulada -->
   <div class="chart-card">
-    <h3>💰 Evolución caja acumulada del inversionista (los 3 escenarios)</h3>
+    <h3>💰 Evolución caja acumulada del inversionista</h3>
     <div class="bars chart-comp" id="chartCajaEvol"></div>
     <div class="comp-legend">
       <div class="comp-legend-item"><div class="comp-legend-color" style="background:#2d6a4f"></div>Base</div>
@@ -991,9 +927,17 @@
     </div>
   </div>
 
+  <div class="chart-card">
+    <h3>🌸 Costo unitario por coco año 10</h3>
+    <div class="bars chart-comp" id="chartCostoCocoComp"></div>
+    <div class="comp-legend">
+      <div class="comp-legend-item"><div class="comp-legend-color" style="background:#2d6a4f"></div>Base</div>
+      <div class="comp-legend-item"><div class="comp-legend-color" style="background:#b08968"></div>Optimista</div>
+      <div class="comp-legend-item"><div class="comp-legend-color" style="background:#495057"></div>Pesimista</div>
+    </div>
+  </div>
 </div>
 
-<!-- MODAL Export/Import -->
 <div class="modal-overlay" id="modal">
   <div class="modal">
     <h2 id="modalTitle">Exportar / Cargar datos</h2>
@@ -1009,13 +953,12 @@
 </div>
 
 <script>
-// ============== DEFAULTS POR ESCENARIO ==============
 const defaults = {
   1: {
     ha: 8, plPorHa: 180, costoPlantula: 25000, costoTransportePlantulas: 3500000,
     precioCoco: 1800, merma: 8,
-    prod_1: 0, prod_2: 0, prod_3: 15, prod_4: 50, prod_5: 90,
-    prod_6: 120, prod_7: 130, prod_8: 130, prod_9: 130, prod_10: 130,
+    prod_1: 0, prod_2: 0, prod_3: 10, prod_4: 30, prod_5: 65,
+    prod_6: 90, prod_7: 110, prod_8: 125, prod_9: 130, prod_10: 130,
     inflPrecio: 4, inflCostos: 4, inflServicios: 5,
     costoTopografia: 800000, costoHueco: 4500000, costoRiego: 7000000,
     costoCerca: 3000000, costoBodega: 15000000, costoHerramientas: 8000000,
@@ -1033,8 +976,8 @@ const defaults = {
   2: {
     ha: 10, plPorHa: 180, costoPlantula: 25000, costoTransportePlantulas: 4000000,
     precioCoco: 1900, merma: 6,
-    prod_1: 0, prod_2: 0, prod_3: 20, prod_4: 65, prod_5: 110,
-    prod_6: 150, prod_7: 165, prod_8: 170, prod_9: 170, prod_10: 170,
+    prod_1: 0, prod_2: 0, prod_3: 20, prod_4: 50, prod_5: 90,
+    prod_6: 120, prod_7: 140, prod_8: 150, prod_9: 150, prod_10: 150,
     inflPrecio: 4.5, inflCostos: 4, inflServicios: 5,
     costoTopografia: 750000, costoHueco: 4200000, costoRiego: 6800000,
     costoCerca: 2800000, costoBodega: 18000000, costoHerramientas: 9000000,
@@ -1052,8 +995,8 @@ const defaults = {
   3: {
     ha: 8, plPorHa: 180, costoPlantula: 28000, costoTransportePlantulas: 4500000,
     precioCoco: 1500, merma: 12,
-    prod_1: 0, prod_2: 0, prod_3: 10, prod_4: 35, prod_5: 65,
-    prod_6: 85, prod_7: 95, prod_8: 100, prod_9: 100, prod_10: 95,
+    prod_1: 0, prod_2: 0, prod_3: 0, prod_4: 15, prod_5: 35,
+    prod_6: 60, prod_7: 80, prod_8: 90, prod_9: 95, prod_10: 95,
     inflPrecio: 3, inflCostos: 5, inflServicios: 6,
     costoTopografia: 900000, costoHueco: 5000000, costoRiego: 7500000,
     costoCerca: 3200000, costoBodega: 15000000, costoHerramientas: 8000000,
@@ -1072,9 +1015,31 @@ const defaults = {
 
 let state = { 1: {...defaults[1]}, 2: {...defaults[2]}, 3: {...defaults[3]} };
 let currentSc = 1;
-const scNames = { 1: 'Base', 2: 'Optimista', 3: 'Pesimista' };
+const scNames = { 1: 'Base/Medio', 2: 'Optim./Ideal', 3: 'Pesimista' };
 
-// ============== CÁLCULOS ==============
+// ====== Number parsing/formatting ======
+function parseNum(str) {
+  if (str === '' || str === null || str === undefined) return 0;
+  if (typeof str === 'number') return str;
+  // Remove dots (thousand sep), convert comma decimal to dot
+  let clean = String(str).replace(/\./g, '').replace(',', '.');
+  clean = clean.replace(/[^\d.\-]/g, '');
+  const n = parseFloat(clean);
+  return isNaN(n) ? 0 : n;
+}
+function fmtInt(n) {
+  if (n === null || n === undefined || isNaN(n)) return '';
+  return Math.round(n).toLocaleString('es-CO');
+}
+function fmtMoney(n) {
+  if (n === null || n === undefined || isNaN(n)) return '';
+  return Math.round(n).toLocaleString('es-CO');
+}
+function fmtDec(n) {
+  if (n === null || n === undefined || isNaN(n)) return '';
+  return (Math.round(n * 100) / 100).toLocaleString('es-CO', { maximumFractionDigits: 2 });
+}
+
 function compute(s) {
   const r = {};
   r.totalPlantas = s.ha * s.plPorHa;
@@ -1111,7 +1076,6 @@ function compute(s) {
     if (a <= 2) { fertUnit = s.fert_estab; malUnit = s.malezas_estab; sanitUnit = s.sanit_temp; }
     else if (a <= 5) { fertUnit = s.fert_crec; malUnit = s.malezas_crec; sanitUnit = s.sanit_temp; }
     else { fertUnit = s.fert_prod; malUnit = s.malezas_prod; sanitUnit = s.sanit_prod; }
-
     const podaUnit = a >= 3 ? s.poda : 0;
 
     const fertilizacion = r.totalPlantas * fertUnit * fCostos;
@@ -1125,6 +1089,7 @@ function compute(s) {
 
     const cocosBrutos = r.totalPlantas * prod;
     const cocosNetos = cocosBrutos * (1 - s.merma / 100);
+    const cocosVendidosPorPlanta = prod * (1 - s.merma / 100);
     const cosechaAcarreo = cocosBrutos * s.costoCosechaAcarreo * fCostos;
 
     let flete = 0, viajes = 0;
@@ -1148,9 +1113,12 @@ function compute(s) {
     const precioAno = s.precioCoco * fPrecio;
     const ingresos = cocosNetos * precioAno;
     const ebitda = ingresos - costosTotales;
+    const costoPorCoco = cocosNetos > 0 ? costosTotales / cocosNetos : 0;
+    const margenPorCoco = precioAno - costoPorCoco;
 
     r.anual.push({
-      ano: a, prod, cocosBrutos, cocosNetos, precioAno, ingresos,
+      ano: a, prod, cocosBrutos, cocosNetos, cocosVendidosPorPlanta,
+      precioAno, ingresos, costoPorCoco, margenPorCoco,
       fertilizacion, malezas, sanitario, foliares, poda, trampeo, opRiego, manejoTotal,
       cosechaAcarreo, flete, viajes,
       asesoriaTotal, aguaE, mantR, admin, fijosTotal,
@@ -1167,7 +1135,6 @@ function compute(s) {
     let saldo = s.montoCredito;
     const nProd = Math.max(1, n - g);
     const cuota = saldo * (i * Math.pow(1 + i, nProd)) / (Math.pow(1 + i, nProd) - 1);
-
     for (let a = 1; a <= n; a++) {
       const interes = saldo * i;
       let abono = 0, pago = 0;
@@ -1187,7 +1154,6 @@ function compute(s) {
     flujoCaja: -capitalPropio, acumulado: -capitalPropio,
     flujoProyecto: -r.inversionTotal
   });
-
   let acumulado = -capitalPropio;
   for (let a = 1; a <= 10; a++) {
     const dat = r.anual[a-1];
@@ -1209,6 +1175,7 @@ function compute(s) {
 
   r.ingresosTotales = r.anual.reduce((s,d) => s + d.ingresos, 0);
   r.ebitdaTotal = r.anual.reduce((s,d) => s + d.ebitda, 0);
+  r.cocosTotales10 = r.anual.reduce((s,d) => s + d.cocosNetos, 0);
   r.roi = (r.ebitdaTotal - r.inversionTotal) / r.inversionTotal * 100;
   r.roiInv = capitalPropio > 0 ? (acumulado + capitalPropio) / capitalPropio * 100 - 100 : 0;
   r.cajaFinal = acumulado;
@@ -1224,7 +1191,6 @@ function compute(s) {
       break;
     }
   }
-
   return r;
 }
 
@@ -1245,7 +1211,6 @@ function tir(flujos) {
   return r * 100;
 }
 
-// ============== FORMATEO ==============
 const fmt = n => {
   if (!isFinite(n) || isNaN(n)) return '—';
   if (Math.abs(n) >= 1e9) return '$' + (n/1e9).toFixed(2) + ' MMM';
@@ -1256,7 +1221,27 @@ const fmt = n => {
 const fmtFull = n => '$' + Math.round(n).toLocaleString('es-CO');
 const fmtPct = n => isFinite(n) ? n.toFixed(1) + '%' : '—';
 
-// ============== RENDER ==============
+// ====== Update only inputs from state (skip the one being typed) ======
+function updateInputsFromState(skipEl) {
+  const s = state[currentSc];
+  document.querySelectorAll('[data-k]').forEach(el => {
+    if (el === skipEl) return;
+    const k = el.dataset.k;
+    if (el.type === 'checkbox') {
+      el.checked = s[k];
+    } else {
+      const fmtType = el.dataset.fmt;
+      if (fmtType === 'money' || fmtType === 'int') {
+        el.value = fmtInt(s[k]);
+      } else if (fmtType === 'dec') {
+        el.value = fmtDec(s[k]);
+      } else {
+        el.value = s[k];
+      }
+    }
+  });
+}
+
 function render() {
   const s = state[currentSc];
   const r = compute(s);
@@ -1270,12 +1255,6 @@ function render() {
     <div class="kpi neutral"><div class="lbl">Payback</div><div class="val">${r.payback ? r.payback.toFixed(1) + ' años' : '> 10 años'}</div><div class="sub">Caja final: ${fmt(r.cajaFinal)}</div></div>
   `;
 
-  document.querySelectorAll('[data-k]').forEach(el => {
-    const k = el.dataset.k;
-    if (el.type === 'checkbox') el.checked = s[k];
-    else el.value = s[k];
-  });
-
   document.getElementById('finFields').style.display = s.financiamiento ? 'grid' : 'none';
   document.getElementById('fleteFields').style.display = s.asumeFlete ? 'grid' : 'none';
 
@@ -1283,12 +1262,12 @@ function render() {
   const inv = r.inversion;
   let html = `<thead><tr><th>Concepto</th><th>Unitario</th><th>Cantidad</th><th>Total</th><th>% Inv</th></tr></thead><tbody>`;
   const rows = [
-    ['Plántulas híbridas certificadas', fmtFull(s.costoPlantula), r.totalPlantas + ' plantas', inv.plantulas],
+    ['Plántulas híbridas certificadas', '$' + fmtMoney(s.costoPlantula), fmtInt(r.totalPlantas) + ' plantas', inv.plantulas],
     ['Transporte plántulas a finca', '—', '1 vez', inv.transPlant],
-    ['Topografía + estaquillado', fmtFull(s.costoTopografia) + '/ha', s.ha + ' ha', inv.topo],
-    ['Huecos + siembra + MO', fmtFull(s.costoHueco) + '/ha', s.ha + ' ha', inv.hueco],
-    ['Sistema riego goteo', fmtFull(s.costoRiego) + '/ha', s.ha + ' ha', inv.riego],
-    ['Cerca eléctrica', fmtFull(s.costoCerca) + '/ha', s.ha + ' ha', inv.cerca],
+    ['Topografía + estaquillado', '$' + fmtMoney(s.costoTopografia) + '/ha', s.ha + ' ha', inv.topo],
+    ['Huecos + siembra + MO', '$' + fmtMoney(s.costoHueco) + '/ha', s.ha + ' ha', inv.hueco],
+    ['Sistema riego goteo', '$' + fmtMoney(s.costoRiego) + '/ha', s.ha + ' ha', inv.riego],
+    ['Cerca eléctrica', '$' + fmtMoney(s.costoCerca) + '/ha', s.ha + ' ha', inv.cerca],
     ['Bodega/caseta poscosecha', '—', '1', inv.bodega],
     ['Herramientas + biofábrica', '—', '1', inv.herr],
     ['Captación agua + concesión', '—', '1', inv.agua],
@@ -1390,27 +1369,13 @@ function render() {
     document.getElementById('tablaAmortizacion').innerHTML = aHtml;
   }
 
-  // FLUJO con colores
+  // FLUJO DE CAJA — solo financiero, sin métricas de cocos
   let fHtml = `<thead><tr><th>Concepto</th>`;
   for (let a = 0; a <= 10; a++) fHtml += `<th>Año ${a}</th>`;
   fHtml += `</tr></thead><tbody>`;
 
-  // Cocos
-  fHtml += `<tr><td>Cocos comercializables</td>`;
-  r.flujo.forEach(f => {
-    fHtml += `<td>${f.ano === 0 ? '—' : Math.round(r.anual[f.ano-1].cocosNetos).toLocaleString('es-CO')}</td>`;
-  });
-  fHtml += `</tr>`;
-
-  // Precio
-  fHtml += `<tr><td>Precio del año</td>`;
-  r.flujo.forEach(f => {
-    fHtml += `<td>${f.ano === 0 ? '—' : fmtFull(r.anual[f.ano-1].precioAno)}</td>`;
-  });
-  fHtml += `</tr>`;
-
-  // Ingresos (siempre verde)
-  fHtml += `<tr class="row-ingresos"><td>Ingresos</td>`;
+  // Ingresos (verde)
+  fHtml += `<tr class="row-ingresos"><td>Ingresos del año</td>`;
   r.flujo.forEach(f => {
     fHtml += `<td>${f.ano === 0 ? '—' : fmt(f.ingresos)}</td>`;
   });
@@ -1423,8 +1388,8 @@ function render() {
   });
   fHtml += `</tr>`;
 
-  // EBITDA (verde/rojo según signo)
-  fHtml += `<tr class="row-ebitda"><td>EBITDA</td>`;
+  // EBITDA
+  fHtml += `<tr><td>EBITDA</td>`;
   r.flujo.forEach(f => {
     if (f.ano === 0) {
       fHtml += `<td>—</td>`;
@@ -1456,16 +1421,16 @@ function render() {
   });
   fHtml += `</tr>`;
 
-  // Flujo del inversionista (verde/rojo)
-  fHtml += `<tr class="row-flujoInv"><td>Flujo del inversionista</td>`;
+  // Flujo del inversionista
+  fHtml += `<tr><td>Flujo del inversionista</td>`;
   r.flujo.forEach(f => {
     const cls = f.flujoCaja >= 0 ? 'cell-pos' : 'cell-neg';
     fHtml += `<td class="${cls}">${fmt(f.flujoCaja)}</td>`;
   });
   fHtml += `</tr>`;
 
-  // Caja acumulada (verde/rojo)
-  fHtml += `<tr class="row-cajaAcum"><td>Caja libre acumulada</td>`;
+  // Caja acumulada
+  fHtml += `<tr><td>Caja libre acumulada</td>`;
   r.flujo.forEach(f => {
     const cls = f.acumulado >= 0 ? 'cell-pos' : 'cell-neg';
     fHtml += `<td class="${cls}">${fmt(f.acumulado)}</td>`;
@@ -1475,7 +1440,53 @@ function render() {
   fHtml += `</tbody>`;
   document.getElementById('tablaFlujo').innerHTML = fHtml;
 
-  // BARS EBITDA
+  // ========== TABLA INDEPENDIENTE: ANÁLISIS UNITARIO POR COCO ==========
+  let kHtml2 = `<thead><tr><th>Concepto</th>`;
+  for (let a = 1; a <= 10; a++) kHtml2 += `<th>Año ${a}</th>`;
+  kHtml2 += `</tr></thead><tbody>`;
+
+  kHtml2 += `<tr style="background:#fff8e1;"><td colspan="11"><strong>🥥 PRODUCCIÓN Y VENTAS POR COCO</strong></td></tr>`;
+  kHtml2 += `<tr class="row-prod"><td>Cocos producidos / planta (bruto)</td>`;
+  for (let a = 1; a <= 10; a++) kHtml2 += `<td>${fmtInt(r.anual[a-1].prod)}</td>`;
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr class="row-prod"><td>Cocos VENDIDOS / planta (neto post merma)</td>`;
+  for (let a = 1; a <= 10; a++) kHtml2 += `<td>${r.anual[a-1].cocosVendidosPorPlanta.toFixed(1)}</td>`;
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr class="row-prod"><td>Cocos VENDIDOS totales año (finca)</td>`;
+  for (let a = 1; a <= 10; a++) kHtml2 += `<td>${fmtInt(r.anual[a-1].cocosNetos)}</td>`;
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr><td>Precio del año (COP/coco)</td>`;
+  for (let a = 1; a <= 10; a++) kHtml2 += `<td>${fmtFull(r.anual[a-1].precioAno)}</td>`;
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr style="background:#fff8e1;"><td colspan="11"><strong>🌸 COSTO UNITARIO Y MARGEN</strong></td></tr>`;
+  kHtml2 += `<tr class="row-costoCoco"><td>Costo unitario por coco (COP)</td>`;
+  for (let a = 1; a <= 10; a++) {
+    const cpc = r.anual[a-1].costoPorCoco;
+    kHtml2 += `<td>${cpc > 0 ? fmtFull(cpc) : '—'}</td>`;
+  }
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr class="row-costoCoco"><td>Margen por coco (precio – costo)</td>`;
+  for (let a = 1; a <= 10; a++) {
+    const cpc = r.anual[a-1].costoPorCoco;
+    kHtml2 += `<td>${cpc > 0 ? fmtFull(r.anual[a-1].margenPorCoco) : '—'}</td>`;
+  }
+  kHtml2 += `</tr>`;
+  kHtml2 += `<tr><td>Margen % sobre precio venta</td>`;
+  for (let a = 1; a <= 10; a++) {
+    const cpc = r.anual[a-1].costoPorCoco;
+    const precio = r.anual[a-1].precioAno;
+    if (cpc > 0 && precio > 0) {
+      const pct = (r.anual[a-1].margenPorCoco / precio) * 100;
+      kHtml2 += `<td>${pct.toFixed(1)}%</td>`;
+    } else {
+      kHtml2 += `<td>—</td>`;
+    }
+  }
+  kHtml2 += `</tr>`;
+  kHtml2 += `</tbody>`;
+  document.getElementById('tablaCocos').innerHTML = kHtml2;
+
+  // BARS
   const maxE = Math.max(...r.anual.map(a => Math.abs(a.ebitda)), 1);
   let bHtml = '';
   r.anual.forEach(a => {
@@ -1485,7 +1496,6 @@ function render() {
   });
   document.getElementById('barsEbitda').innerHTML = bHtml;
 
-  // BARS CAJA
   const cajas = r.flujo.slice(1).map(f => f.acumulado);
   const maxC = Math.max(...cajas.map(Math.abs), 1);
   let cBars = '';
@@ -1496,104 +1506,218 @@ function render() {
   });
   document.getElementById('barsCaja').innerHTML = cBars;
 
-  // KPIS
-  let kHtml = `<thead><tr><th>Indicador</th><th>Valor</th><th>Comentario</th></tr></thead><tbody>`;
-  const kpis = [
+  const costosCoco = r.anual.map(a => a.costoPorCoco).filter(c => c > 0);
+  const maxCC = costosCoco.length > 0 ? Math.max(...costosCoco) : 1;
+  let ccBars = '';
+  r.anual.forEach(a => {
+    const h = a.costoPorCoco > 0 ? (a.costoPorCoco / maxCC * 180) : 0;
+    ccBars += `<div class="bar-col"><div class="bar-val">${a.costoPorCoco > 0 ? fmtFull(a.costoPorCoco) : '—'}</div><div class="bar pink" style="height:${h}px;"></div><div class="bar-lbl">Año ${a.ano}</div></div>`;
+  });
+  document.getElementById('barsCostoCoco').innerHTML = ccBars;
+
+  // KPIS POR CATEGORÍAS
+  function renderKpiTable(elId, rows) {
+    let h = `<thead><tr><th>Indicador</th><th>Valor</th><th>Comentario</th></tr></thead><tbody>`;
+    rows.forEach(([n,v,c]) => {
+      h += `<tr><td>${n}</td><td><strong>${v}</strong></td><td style="color:#74a691;font-size:11px;">${c||''}</td></tr>`;
+    });
+    h += `</tbody>`;
+    document.getElementById(elId).innerHTML = h;
+  }
+
+  // 1. Estructura
+  renderKpiTable('kpiEstructura', [
     ['Hectáreas', s.ha + ' ha', 'Tamaño del proyecto'],
-    ['Plantas totales', r.totalPlantas.toLocaleString('es-CO'), s.plPorHa + ' plantas/ha'],
-    ['Inversión total', fmtFull(r.inversionTotal), 'Sin valor de tierra'],
+    ['Plantas por hectárea', s.plPorHa, 'Densidad de siembra'],
+    ['Plantas totales', fmtInt(r.totalPlantas), 'Total finca'],
+    ['Densidad equivalente', (s.plPorHa <= 156 ? '8x8 m cuadro' : s.plPorHa <= 180 ? '8x8 m tresbolillo' : '7.5x7.5 m tresbolillo'), 'Marco de siembra']
+  ]);
+
+  // 2. Inversión
+  renderKpiTable('kpiInversion', [
+    ['Inversión inicial total', fmtFull(r.inversionTotal), 'Sin valor de tierra'],
     ['Inversión por hectárea', fmtFull(r.inversionTotal/s.ha), ''],
+    ['Inversión por planta', fmtFull(r.inversionTotal/r.totalPlantas), ''],
     ['Capital propio requerido', fmtFull(r.capitalPropio), s.financiamiento ? 'Después de crédito' : 'Sin financiamiento'],
-    ['Ingresos acumulados (10 años)', fmtFull(r.ingresosTotales), ''],
-    ['EBITDA acumulado (10 años)', fmtFull(r.ebitdaTotal), ''],
-    ['EBITDA año 6 (plena prod.)', fmtFull(r.anual[5].ebitda), ''],
-    ['EBITDA año 10', fmtFull(r.anual[9].ebitda), ''],
-    ['Margen EBITDA año 6', r.anual[5].ingresos > 0 ? fmtPct(r.anual[5].ebitda/r.anual[5].ingresos*100) : '—', ''],
-    ['Margen EBITDA año 10', r.anual[9].ingresos > 0 ? fmtPct(r.anual[9].ebitda/r.anual[9].ingresos*100) : '—', ''],
-    ['TIR del proyecto', fmtPct(r.tirProyecto), 'Sin apalancamiento'],
-    ['TIR del inversionista', fmtPct(r.tirInversionista), 'Con apalancamiento'],
-    ['ROI 10 años', fmtPct(r.roi), ''],
-    ['Payback', r.payback ? r.payback.toFixed(1) + ' años' : '> 10 años', ''],
-    ['Caja final año 10', fmtFull(r.cajaFinal), ''],
+    ['Crédito bancario', s.financiamiento ? fmtFull(s.montoCredito) : 'No activo', s.financiamiento ? s.tasaCredito + '% EA · ' + s.plazoCredito + ' años' : '']
+  ]);
+
+  // 3. Producción y ventas
+  renderKpiTable('kpiProduccion', [
+    ['Cocos / planta año 3', fmtInt(r.anual[2].prod), 'Inicio producción'],
+    ['Cocos / planta año 6', fmtInt(r.anual[5].prod), 'Acercándose a plena prod.'],
+    ['Cocos / planta año 8', fmtInt(r.anual[7].prod), 'Plena producción'],
+    ['Cocos / planta año 10', fmtInt(r.anual[9].prod), ''],
+    ['Cocos vendidos / planta año 10 (post merma)', r.anual[9].cocosVendidosPorPlanta.toFixed(1), 'Después aplicar merma'],
+    ['Cocos vendidos totales año 6', fmtInt(r.anual[5].cocosNetos), 'Finca completa'],
+    ['Cocos vendidos totales año 10', fmtInt(r.anual[9].cocosNetos), 'Finca completa'],
+    ['Cocos acumulados 10 años', fmtInt(r.cocosTotales10), 'Total vendido en el período'],
+    ['Merma comercial aplicada', s.merma + '%', 'Cocos no vendibles']
+  ]);
+
+  // 4. Ingresos y EBITDA
+  renderKpiTable('kpiIngresos', [
+    ['Precio coco año 1', fmtFull(s.precioCoco), 'Base de referencia'],
+    ['Precio coco año 10 (con inflación)', fmtFull(r.anual[9].precioAno), s.inflPrecio + '% anual'],
+    ['Ingreso año 6', fmtFull(r.anual[5].ingresos), 'Plena producción inicio'],
+    ['Ingreso año 10', fmtFull(r.anual[9].ingresos), ''],
     ['Ingreso mensual año 6 / ha', fmtFull(r.anual[5].ingresos/s.ha/12), ''],
     ['Ingreso mensual año 10 / ha', fmtFull(r.anual[9].ingresos/s.ha/12), ''],
-    ['Costo unitario año 10 (COP/coco)', r.anual[9].cocosNetos > 0 ? fmtFull(r.anual[9].costosTotales/r.anual[9].cocosNetos) : '—', ''],
-  ];
-  kpis.forEach(([n,v,c]) => {
-    kHtml += `<tr><td>${n}</td><td><strong>${v}</strong></td><td style="color:#74a691;font-size:11px;">${c}</td></tr>`;
-  });
-  kHtml += `</tbody>`;
-  document.getElementById('tablaKpis').innerHTML = kHtml;
+    ['Ingresos acumulados 10 años', fmtFull(r.ingresosTotales), ''],
+    ['EBITDA año 6', fmtFull(r.anual[5].ebitda), ''],
+    ['EBITDA año 10', fmtFull(r.anual[9].ebitda), ''],
+    ['EBITDA acumulado 10 años', fmtFull(r.ebitdaTotal), ''],
+    ['Margen EBITDA año 6', r.anual[5].ingresos > 0 ? fmtPct(r.anual[5].ebitda/r.anual[5].ingresos*100) : '—', '% sobre ingresos'],
+    ['Margen EBITDA año 10', r.anual[9].ingresos > 0 ? fmtPct(r.anual[9].ebitda/r.anual[9].ingresos*100) : '—', '% sobre ingresos']
+  ]);
 
-  // COMPARATIVA
+  // 5. Costos y márgenes unitarios
+  const cpc6 = r.anual[5].costoPorCoco;
+  const cpc10 = r.anual[9].costoPorCoco;
+  renderKpiTable('kpiCostos', [
+    ['Costo operativo año 6', fmtFull(r.anual[5].costosTotales), 'Total costos plena prod.'],
+    ['Costo operativo año 10', fmtFull(r.anual[9].costosTotales), ''],
+    ['Costo por coco año 6', cpc6 > 0 ? fmtFull(cpc6) : '—', 'Costo total / cocos vendidos'],
+    ['Costo por coco año 10', cpc10 > 0 ? fmtFull(cpc10) : '—', ''],
+    ['Margen por coco año 6', cpc6 > 0 ? fmtFull(r.anual[5].margenPorCoco) : '—', 'Precio – costo'],
+    ['Margen por coco año 10', cpc10 > 0 ? fmtFull(r.anual[9].margenPorCoco) : '—', ''],
+    ['Margen % por coco año 10', (cpc10 > 0 && r.anual[9].precioAno > 0) ? fmtPct(r.anual[9].margenPorCoco/r.anual[9].precioAno*100) : '—', '% sobre precio']
+  ]);
+
+  // 6. Rentabilidad
+  renderKpiTable('kpiRentabilidad', [
+    ['TIR del proyecto', fmtPct(r.tirProyecto), 'Sin apalancamiento'],
+    ['TIR del inversionista', fmtPct(r.tirInversionista), 'Con apalancamiento (si aplica)'],
+    ['ROI 10 años (proyecto)', fmtPct(r.roi), 'EBITDA acum / inversión'],
+    ['Payback', r.payback ? r.payback.toFixed(1) + ' años' : '> 10 años', 'Recuperación capital']
+  ]);
+
+  // 7. Caja
+  renderKpiTable('kpiCaja', [
+    ['Caja final año 10', fmtFull(r.cajaFinal), 'Acumulada disponible'],
+    ['Flujo año 6', fmtFull(r.flujo[6].flujoCaja), 'Inversionista'],
+    ['Flujo año 8', fmtFull(r.flujo[8].flujoCaja), ''],
+    ['Flujo año 10', fmtFull(r.flujo[10].flujoCaja), ''],
+    ['Caja acumulada año 5', fmtFull(r.flujo[5].acumulado), ''],
+    ['Caja acumulada año 7', fmtFull(r.flujo[7].acumulado), ''],
+    ['Caja acumulada año 10', fmtFull(r.flujo[10].acumulado), '']
+  ]);
+
   renderComparativa();
 }
 
-// ============== COMPARATIVA ==============
 function renderComparativa() {
   const r1 = compute(state[1]);
   const r2 = compute(state[2]);
   const r3 = compute(state[3]);
 
-  // Tabla
-  let html = `<thead><tr><th>Indicador</th><th>📗 Base</th><th>📘 Optim.</th><th>📕 Pesim.</th></tr></thead><tbody>`;
-  const rows = [
+  function renderCompTable(elId, rows) {
+    let h = `<thead><tr><th>Indicador</th><th>📗 Base</th><th>📘 Optimista</th><th>📕 Pesimista</th></tr></thead><tbody>`;
+    rows.forEach(row => {
+      h += `<tr><td>${row[0]}</td><td class="s1">${row[1]}</td><td class="s2">${row[2]}</td><td class="s3">${row[3]}</td></tr>`;
+    });
+    h += `</tbody>`;
+    document.getElementById(elId).innerHTML = h;
+  }
+
+  // 1. Estructura
+  renderCompTable('compEstructura', [
     ['Hectáreas', state[1].ha + ' ha', state[2].ha + ' ha', state[3].ha + ' ha'],
-    ['Plantas totales', r1.totalPlantas, r2.totalPlantas, r3.totalPlantas],
-    ['Precio coco base', fmtFull(state[1].precioCoco), fmtFull(state[2].precioCoco), fmtFull(state[3].precioCoco)],
-    ['Productividad año 6', state[1].prod_6, state[2].prod_6, state[3].prod_6],
-    ['Productividad año 10', state[1].prod_10, state[2].prod_10, state[3].prod_10],
+    ['Plantas por hectárea', state[1].plPorHa, state[2].plPorHa, state[3].plPorHa],
+    ['Plantas totales', fmtInt(r1.totalPlantas), fmtInt(r2.totalPlantas), fmtInt(r3.totalPlantas)],
     ['Asume flete', state[1].asumeFlete ? 'Sí' : 'No', state[2].asumeFlete ? 'Sí' : 'No', state[3].asumeFlete ? 'Sí' : 'No'],
-    ['Inflación precio/costos', state[1].inflPrecio+'%/'+state[1].inflCostos+'%', state[2].inflPrecio+'%/'+state[2].inflCostos+'%', state[3].inflPrecio+'%/'+state[3].inflCostos+'%'],
+    ['Inflación precio', state[1].inflPrecio + '%', state[2].inflPrecio + '%', state[3].inflPrecio + '%'],
+    ['Inflación costos', state[1].inflCostos + '%', state[2].inflCostos + '%', state[3].inflCostos + '%']
+  ]);
+
+  // 2. Inversión
+  renderCompTable('compInversion', [
     ['Inversión inicial total', fmt(r1.inversionTotal), fmt(r2.inversionTotal), fmt(r3.inversionTotal)],
     ['Inversión por hectárea', fmt(r1.inversionTotal/state[1].ha), fmt(r2.inversionTotal/state[2].ha), fmt(r3.inversionTotal/state[3].ha)],
-    ['Financiamiento', state[1].financiamiento ? '✓' : '—', state[2].financiamiento ? '✓' : '—', state[3].financiamiento ? '✓' : '—'],
-    ['Capital propio', fmt(r1.capitalPropio), fmt(r2.capitalPropio), fmt(r3.capitalPropio)],
-    ['Ingresos acumulados 10a', fmt(r1.ingresosTotales), fmt(r2.ingresosTotales), fmt(r3.ingresosTotales)],
-    ['EBITDA acumulado 10a', fmt(r1.ebitdaTotal), fmt(r2.ebitdaTotal), fmt(r3.ebitdaTotal)],
+    ['Inversión por planta', fmt(r1.inversionTotal/r1.totalPlantas), fmt(r2.inversionTotal/r2.totalPlantas), fmt(r3.inversionTotal/r3.totalPlantas)],
+    ['Financiamiento', state[1].financiamiento ? '✓ Activo' : '— No', state[2].financiamiento ? '✓ Activo' : '— No', state[3].financiamiento ? '✓ Activo' : '— No'],
+    ['Capital propio requerido', fmt(r1.capitalPropio), fmt(r2.capitalPropio), fmt(r3.capitalPropio)]
+  ]);
+
+  // 3. Producción y ventas
+  renderCompTable('compProduccion', [
+    ['Productividad año 6 (cocos/pl)', state[1].prod_6, state[2].prod_6, state[3].prod_6],
+    ['Productividad año 10 (cocos/pl)', state[1].prod_10, state[2].prod_10, state[3].prod_10],
+    ['Cocos vendidos / planta año 10', r1.anual[9].cocosVendidosPorPlanta.toFixed(1), r2.anual[9].cocosVendidosPorPlanta.toFixed(1), r3.anual[9].cocosVendidosPorPlanta.toFixed(1)],
+    ['Cocos vendidos totales año 6', fmtInt(r1.anual[5].cocosNetos), fmtInt(r2.anual[5].cocosNetos), fmtInt(r3.anual[5].cocosNetos)],
+    ['Cocos vendidos totales año 10', fmtInt(r1.anual[9].cocosNetos), fmtInt(r2.anual[9].cocosNetos), fmtInt(r3.anual[9].cocosNetos)],
+    ['Cocos acumulados 10 años', fmtInt(r1.cocosTotales10), fmtInt(r2.cocosTotales10), fmtInt(r3.cocosTotales10)],
+    ['Merma comercial', state[1].merma + '%', state[2].merma + '%', state[3].merma + '%']
+  ]);
+
+  // 4. Ingresos y EBITDA
+  renderCompTable('compIngresos', [
+    ['Precio coco año 1', fmtFull(state[1].precioCoco), fmtFull(state[2].precioCoco), fmtFull(state[3].precioCoco)],
+    ['Precio coco año 10', fmtFull(r1.anual[9].precioAno), fmtFull(r2.anual[9].precioAno), fmtFull(r3.anual[9].precioAno)],
+    ['Ingreso año 6', fmt(r1.anual[5].ingresos), fmt(r2.anual[5].ingresos), fmt(r3.anual[5].ingresos)],
+    ['Ingreso año 10', fmt(r1.anual[9].ingresos), fmt(r2.anual[9].ingresos), fmt(r3.anual[9].ingresos)],
+    ['Ingreso mensual año 10 / ha', fmt(r1.anual[9].ingresos/state[1].ha/12), fmt(r2.anual[9].ingresos/state[2].ha/12), fmt(r3.anual[9].ingresos/state[3].ha/12)],
+    ['Ingresos acumulados 10 años', fmt(r1.ingresosTotales), fmt(r2.ingresosTotales), fmt(r3.ingresosTotales)],
     ['EBITDA año 6', fmt(r1.anual[5].ebitda), fmt(r2.anual[5].ebitda), fmt(r3.anual[5].ebitda)],
     ['EBITDA año 10', fmt(r1.anual[9].ebitda), fmt(r2.anual[9].ebitda), fmt(r3.anual[9].ebitda)],
-    ['Margen EBITDA año 10', r1.anual[9].ingresos>0?fmtPct(r1.anual[9].ebitda/r1.anual[9].ingresos*100):'—', r2.anual[9].ingresos>0?fmtPct(r2.anual[9].ebitda/r2.anual[9].ingresos*100):'—', r3.anual[9].ingresos>0?fmtPct(r3.anual[9].ebitda/r3.anual[9].ingresos*100):'—'],
-    ['TIR proyecto', fmtPct(r1.tirProyecto), fmtPct(r2.tirProyecto), fmtPct(r3.tirProyecto)],
-    ['TIR inversionista', fmtPct(r1.tirInversionista), fmtPct(r2.tirInversionista), fmtPct(r3.tirInversionista)],
+    ['EBITDA acumulado 10 años', fmt(r1.ebitdaTotal), fmt(r2.ebitdaTotal), fmt(r3.ebitdaTotal)],
+    ['Margen EBITDA año 10', r1.anual[9].ingresos>0?fmtPct(r1.anual[9].ebitda/r1.anual[9].ingresos*100):'—', r2.anual[9].ingresos>0?fmtPct(r2.anual[9].ebitda/r2.anual[9].ingresos*100):'—', r3.anual[9].ingresos>0?fmtPct(r3.anual[9].ebitda/r3.anual[9].ingresos*100):'—']
+  ]);
+
+  // 5. Costos y margen unitario
+  const cpc1 = r1.anual[9].costoPorCoco;
+  const cpc2 = r2.anual[9].costoPorCoco;
+  const cpc3 = r3.anual[9].costoPorCoco;
+  renderCompTable('compCostos', [
+    ['Costo operativo año 10', fmt(r1.anual[9].costosTotales), fmt(r2.anual[9].costosTotales), fmt(r3.anual[9].costosTotales)],
+    ['Costo por coco año 6', r1.anual[5].costoPorCoco>0?fmtFull(r1.anual[5].costoPorCoco):'—', r2.anual[5].costoPorCoco>0?fmtFull(r2.anual[5].costoPorCoco):'—', r3.anual[5].costoPorCoco>0?fmtFull(r3.anual[5].costoPorCoco):'—'],
+    ['Costo por coco año 10', cpc1>0?fmtFull(cpc1):'—', cpc2>0?fmtFull(cpc2):'—', cpc3>0?fmtFull(cpc3):'—'],
+    ['Margen por coco año 10', cpc1>0?fmtFull(r1.anual[9].margenPorCoco):'—', cpc2>0?fmtFull(r2.anual[9].margenPorCoco):'—', cpc3>0?fmtFull(r3.anual[9].margenPorCoco):'—'],
+    ['Margen % por coco año 10',
+      cpc1>0 && r1.anual[9].precioAno>0 ? fmtPct(r1.anual[9].margenPorCoco/r1.anual[9].precioAno*100) : '—',
+      cpc2>0 && r2.anual[9].precioAno>0 ? fmtPct(r2.anual[9].margenPorCoco/r2.anual[9].precioAno*100) : '—',
+      cpc3>0 && r3.anual[9].precioAno>0 ? fmtPct(r3.anual[9].margenPorCoco/r3.anual[9].precioAno*100) : '—'
+    ]
+  ]);
+
+  // 6. Rentabilidad
+  renderCompTable('compRentabilidad', [
+    ['TIR del proyecto', fmtPct(r1.tirProyecto), fmtPct(r2.tirProyecto), fmtPct(r3.tirProyecto)],
+    ['TIR del inversionista', fmtPct(r1.tirInversionista), fmtPct(r2.tirInversionista), fmtPct(r3.tirInversionista)],
     ['ROI 10 años', fmtPct(r1.roi), fmtPct(r2.roi), fmtPct(r3.roi)],
-    ['Payback', r1.payback ? r1.payback.toFixed(1) + 'a' : '>10', r2.payback ? r2.payback.toFixed(1) + 'a' : '>10', r3.payback ? r3.payback.toFixed(1) + 'a' : '>10'],
+    ['Payback', r1.payback ? r1.payback.toFixed(1) + ' años' : '>10', r2.payback ? r2.payback.toFixed(1) + ' años' : '>10', r3.payback ? r3.payback.toFixed(1) + ' años' : '>10']
+  ]);
+
+  // 7. Caja
+  renderCompTable('compCaja', [
     ['Caja final año 10', fmt(r1.cajaFinal), fmt(r2.cajaFinal), fmt(r3.cajaFinal)],
-    ['Ingreso mensual año 10/ha', fmt(r1.anual[9].ingresos/state[1].ha/12), fmt(r2.anual[9].ingresos/state[2].ha/12), fmt(r3.anual[9].ingresos/state[3].ha/12)]
-  ];
-  rows.forEach(row => {
-    html += `<tr><td>${row[0]}</td><td class="s1">${row[1]}</td><td class="s2">${row[2]}</td><td class="s3">${row[3]}</td></tr>`;
-  });
-  html += `</tbody>`;
-  document.getElementById('tablaComparativa').innerHTML = html;
+    ['Flujo año 6', fmt(r1.flujo[6].flujoCaja), fmt(r2.flujo[6].flujoCaja), fmt(r3.flujo[6].flujoCaja)],
+    ['Flujo año 10', fmt(r1.flujo[10].flujoCaja), fmt(r2.flujo[10].flujoCaja), fmt(r3.flujo[10].flujoCaja)],
+    ['Caja acumulada año 5', fmt(r1.flujo[5].acumulado), fmt(r2.flujo[5].acumulado), fmt(r3.flujo[5].acumulado)],
+    ['Caja acumulada año 7', fmt(r1.flujo[7].acumulado), fmt(r2.flujo[7].acumulado), fmt(r3.flujo[7].acumulado)]
+  ]);
 
-  // GRÁFICOS DE BARRAS AGRUPADAS
-  renderBarGroup('chartInversion', [r1.inversionTotal, r2.inversionTotal, r3.inversionTotal], ['Inversión inicial'], 'single');
-  renderBarGroup('chartEbitdaAcum', [r1.ebitdaTotal, r2.ebitdaTotal, r3.ebitdaTotal], ['EBITDA acumulado'], 'single');
-  renderBarGroup('chartCajaFinal', [r1.cajaFinal, r2.cajaFinal, r3.cajaFinal], ['Caja final año 10'], 'single');
-  renderBarGroup('chartProduccion', [
-    r1.anual[9].cocosNetos, r2.anual[9].cocosNetos, r3.anual[9].cocosNetos
-  ], ['Producción año 10'], 'single', true);
+  renderBarGroup('chartInversion', [r1.inversionTotal, r2.inversionTotal, r3.inversionTotal], 'Inversión inicial', false);
+  renderBarGroup('chartEbitdaAcum', [r1.ebitdaTotal, r2.ebitdaTotal, r3.ebitdaTotal], 'EBITDA acumulado', false);
+  renderBarGroup('chartCajaFinal', [r1.cajaFinal, r2.cajaFinal, r3.cajaFinal], 'Caja final año 10', false);
+  renderBarGroup('chartProduccion', [r1.anual[9].cocosNetos, r2.anual[9].cocosNetos, r3.anual[9].cocosNetos], 'Cocos vendidos año 10', true);
+  renderBarGroup('chartCostoCocoComp', [r1.anual[9].costoPorCoco, r2.anual[9].costoPorCoco, r3.anual[9].costoPorCoco], 'Costo/coco año 10', false);
 
-  // Evolución EBITDA año a año
   renderTimeline('chartEbitdaEvol',
     r1.anual.map(a => a.ebitda),
     r2.anual.map(a => a.ebitda),
     r3.anual.map(a => a.ebitda)
   );
-
-  // Evolución caja acumulada
   renderTimeline('chartCajaEvol',
     r1.flujo.slice(1).map(f => f.acumulado),
     r2.flujo.slice(1).map(f => f.acumulado),
     r3.flujo.slice(1).map(f => f.acumulado)
   );
 
-  // KPI bars comparison
   renderKpiBars(r1, r2, r3);
 }
 
-function renderBarGroup(elId, values, labels, mode, isInt) {
+function renderBarGroup(elId, values, label, isInt) {
   const el = document.getElementById(elId);
   if (!el) return;
   const maxV = Math.max(...values.map(Math.abs), 1);
@@ -1605,7 +1729,7 @@ function renderBarGroup(elId, values, labels, mode, isInt) {
     const display = isInt ? Math.round(v).toLocaleString('es-CO') : fmt(v);
     html += `<div class="bar-3 ${cls} ${neg}" style="height:${h}px;"><div class="val-tip">${display}</div></div>`;
   });
-  html += `<div class="group-lbl">${labels[0]}</div></div>`;
+  html += `<div class="group-lbl">${label}</div></div>`;
   el.innerHTML = html;
 }
 
@@ -1614,7 +1738,6 @@ function renderTimeline(elId, s1Data, s2Data, s3Data) {
   if (!el) return;
   const allVals = [...s1Data, ...s2Data, ...s3Data];
   const maxV = Math.max(...allVals.map(Math.abs), 1);
-
   let html = '';
   for (let i = 0; i < 10; i++) {
     html += `<div class="bar-group">`;
@@ -1632,15 +1755,16 @@ function renderTimeline(elId, s1Data, s2Data, s3Data) {
 function renderKpiBars(r1, r2, r3) {
   const el = document.getElementById('kpiBarsComp');
   if (!el) return;
-
   const kpisToShow = [
-    { name: 'TIR Proyecto', values: [r1.tirProyecto, r2.tirProyecto, r3.tirProyecto], fmt: fmtPct, isPct: true },
-    { name: 'ROI 10 años', values: [r1.roi, r2.roi, r3.roi], fmt: fmtPct, isPct: true },
+    { name: 'TIR Proyecto', values: [r1.tirProyecto, r2.tirProyecto, r3.tirProyecto], fmt: fmtPct },
+    { name: 'ROI 10 años', values: [r1.roi, r2.roi, r3.roi], fmt: fmtPct },
     { name: 'EBITDA acumulado', values: [r1.ebitdaTotal, r2.ebitdaTotal, r3.ebitdaTotal], fmt: fmt },
     { name: 'Caja final año 10', values: [r1.cajaFinal, r2.cajaFinal, r3.cajaFinal], fmt: fmt },
-    { name: 'Payback (años)', values: [r1.payback||10, r2.payback||10, r3.payback||10], fmt: v => v >= 10 ? '>10a' : v.toFixed(1)+'a', invert: true }
+    { name: 'Cocos vend. año 10', values: [r1.anual[9].cocosNetos, r2.anual[9].cocosNetos, r3.anual[9].cocosNetos], fmt: v => Math.round(v).toLocaleString('es-CO') },
+    { name: 'Cocos/planta año 10', values: [r1.anual[9].cocosVendidosPorPlanta, r2.anual[9].cocosVendidosPorPlanta, r3.anual[9].cocosVendidosPorPlanta], fmt: v => v.toFixed(1) },
+    { name: 'Costo/coco año 10', values: [r1.anual[9].costoPorCoco, r2.anual[9].costoPorCoco, r3.anual[9].costoPorCoco], fmt: v => v > 0 ? fmtFull(v) : '—' },
+    { name: 'Payback (años)', values: [r1.payback||10, r2.payback||10, r3.payback||10], fmt: v => v >= 10 ? '>10a' : v.toFixed(1)+'a' }
   ];
-
   let html = '<div class="kpi-bars">';
   kpisToShow.forEach(kpi => {
     const maxV = Math.max(...kpi.values.map(Math.abs), 1);
@@ -1680,6 +1804,7 @@ document.querySelectorAll('.sc-tab').forEach(t => {
     t.classList.add('active');
     currentSc = parseInt(t.dataset.sc);
     render();
+    updateInputsFromState();
   });
 });
 
@@ -1689,15 +1814,87 @@ document.querySelectorAll('.section-header').forEach(h => {
   });
 });
 
-document.addEventListener('input', e => {
-  if (e.target.dataset && e.target.dataset.k) {
+// INPUT HANDLER — formato con separador de miles preservando posición del cursor
+function handleInput(e) {
+  const el = e.target;
+  if (!el.dataset || !el.dataset.k) return;
+  const k = el.dataset.k;
+  const s = state[currentSc];
+
+  if (el.type === 'checkbox') {
+    s[k] = el.checked;
+    render();
+    return;
+  }
+
+  const fmtType = el.dataset.fmt;
+
+  if (fmtType === 'money' || fmtType === 'int') {
+    // Capturar posición de cursor antes
+    const caretBefore = el.selectionStart;
+    const valueBefore = el.value;
+    // Contar dígitos antes del cursor en el valor actual
+    const digitsBeforeCursor = (valueBefore.substring(0, caretBefore).match(/\d/g) || []).length;
+
+    // Parsear y guardar en estado
+    const numericVal = parseNum(valueBefore);
+    s[k] = numericVal;
+
+    // Reformatear
+    const formatted = fmtInt(numericVal);
+    el.value = formatted;
+
+    // Restaurar cursor según número de dígitos
+    let newCaret = formatted.length;
+    if (digitsBeforeCursor === 0) {
+      newCaret = 0;
+    } else {
+      let digitsSeen = 0;
+      for (let i = 0; i < formatted.length; i++) {
+        if (/\d/.test(formatted[i])) {
+          digitsSeen++;
+          if (digitsSeen === digitsBeforeCursor) {
+            newCaret = i + 1;
+            break;
+          }
+        }
+      }
+    }
+    try { el.setSelectionRange(newCaret, newCaret); } catch(err) {}
+  } else if (fmtType === 'dec') {
+    // Para decimales: no reformatear mientras escribe (para permitir "0.", "0,5", etc.)
+    s[k] = parseNum(el.value);
+  } else {
+    s[k] = parseFloat(el.value) || 0;
+  }
+
+  // Re-render outputs sin tocar inputs (excepto el actual)
+  renderAndKeepFocus(el);
+}
+
+function renderAndKeepFocus(focusedEl) {
+  const caret = focusedEl && focusedEl.selectionStart !== undefined ? focusedEl.selectionStart : null;
+  const k = focusedEl && focusedEl.dataset ? focusedEl.dataset.k : null;
+  render();
+  updateInputsFromState(focusedEl);
+  if (k && focusedEl && document.activeElement !== focusedEl) {
+    try {
+      focusedEl.focus();
+      if (caret !== null) focusedEl.setSelectionRange(caret, caret);
+    } catch(e) {}
+  }
+}
+
+// Cuando un input decimal pierde foco, reformatearlo
+document.addEventListener('blur', e => {
+  if (e.target.dataset && e.target.dataset.k && e.target.dataset.fmt === 'dec') {
     const k = e.target.dataset.k;
     const s = state[currentSc];
-    if (e.target.type === 'checkbox') s[k] = e.target.checked;
-    else s[k] = parseFloat(e.target.value) || 0;
-    render();
+    e.target.value = fmtDec(s[k]);
   }
-});
+}, true);
+
+document.addEventListener('input', handleInput);
 
 // ============== EXPORT / IMPORT / RESET ==============
 function openModal(mode) {
@@ -1709,7 +1906,7 @@ function openModal(mode) {
 
   if (mode === 'export') {
     title.textContent = '📥 Exportar datos de los 3 escenarios';
-    desc.innerHTML = 'Copia este texto JSON y guárdalo en un archivo de texto (.txt o .json) para usarlo como respaldo. Puedes cargarlo después con el botón "Cargar datos".';
+    desc.innerHTML = 'Copia este texto JSON y guárdalo en un archivo .txt o .json para usarlo como respaldo.';
     text.value = JSON.stringify(state, null, 2);
     text.readOnly = true;
     action.textContent = '📋 Copiar al portapapeles';
@@ -1726,7 +1923,7 @@ function openModal(mode) {
     };
   } else if (mode === 'import') {
     title.textContent = '📤 Cargar datos previamente exportados';
-    desc.innerHTML = 'Pega aquí el texto JSON que exportaste anteriormente y haz clic en "Cargar".';
+    desc.innerHTML = 'Pega aquí el texto JSON exportado y haz clic en "Cargar".';
     text.value = '';
     text.readOnly = false;
     text.placeholder = 'Pega aquí el JSON exportado...';
@@ -1741,10 +1938,11 @@ function openModal(mode) {
             3: {...defaults[3], ...data['3']}
           };
           render();
+          updateInputsFromState();
           closeModal();
           alert('✓ Datos cargados correctamente');
         } else {
-          alert('❌ El JSON no tiene la estructura correcta. Debe contener los 3 escenarios.');
+          alert('❌ El JSON no tiene la estructura correcta.');
         }
       } catch (err) {
         alert('❌ Error al cargar: ' + err.message);
@@ -1762,14 +1960,16 @@ document.getElementById('btnExport').addEventListener('click', () => openModal('
 document.getElementById('btnImport').addEventListener('click', () => openModal('import'));
 document.getElementById('modalCancel').addEventListener('click', closeModal);
 document.getElementById('btnReset').addEventListener('click', () => {
-  if (confirm('¿Restaurar los 3 escenarios a sus valores por defecto? Perderás los cambios actuales si no los has exportado.')) {
+  if (confirm('¿Restaurar los 3 escenarios a valores por defecto? Perderás los cambios actuales si no los exportaste.')) {
     state = { 1: {...defaults[1]}, 2: {...defaults[2]}, 3: {...defaults[3]} };
     render();
+    updateInputsFromState();
   }
 });
 
 // Init
 render();
+updateInputsFromState();
 </script>
 </body>
 </html>
